@@ -10,8 +10,6 @@ install:
 before_script:
   - git config user.name "Travis-CI"
   - git config user.email "smalltime153@gmail.com"
-  - git remote rm origin
-  - git remote add origin https://${GITHUB_TOKEN}@${GH_GITHUB}
 script: npm run build
 after_success:
   - cd public
@@ -20,6 +18,8 @@ after_success:
   - git add -A .
   - git status
   - git commit -a -m "Travis-CI Deployed to Github"
+  - git remote rm origin
+  - git remote add origin https://${GITHUB_TOKEN}@${GH_GITHUB}
   - git push -f origin master
   - echo -e "Done\n"
 env:
