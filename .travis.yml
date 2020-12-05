@@ -1,0 +1,24 @@
+language: node_js
+node_js: node
+before_install:
+  - export TZ='Asia/Shanghai'
+install:
+  - npm i
+before_script:
+  - git config user.name "Travis-CI"
+  - git config user.email "smalltime153@gmail.com"
+  - git remote rm origin
+  - git remote add origin https://${GITHUB_TOKEN}@${GH_GITHUB}
+script: npm run build
+after_success:
+  - cd public
+  - git init
+  - echo 'blog.abplan.top' > CNAME
+  - git add -A .
+  - git status
+  - git commit -a -m "Travis-CI Deployed to Github"
+  - git push -f origin master
+  - echo -e "Done\n"
+env:
+  global:
+    - GH_GITHUB: github.com/FearwareX/xiaoshiguang123.github.io.git
