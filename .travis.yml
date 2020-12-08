@@ -2,26 +2,32 @@ language: node_js
 node_js: node
 branches:
   only:
-    - vue-press
+  - vue-press
 before_install:
-  - export TZ='Asia/Shanghai'
+- openssl aes-256-cbc -K $encrypted_44750c81711d_key -iv $encrypted_44750c81711d_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+- export TZ='Asia/Shanghai'
+addons:
+  ssh_known_hosts:
+  - abplan.top
 install:
-  - npm i
+- npm i
 before_script:
-  - git config user.name "Travis-CI"
-  - git config user.email "smalltime153@gmail.com"
+- git config user.name "Travis-CI"
+- git config user.email "smalltime153@gmail.com"
 script: npm run build
 after_success:
-  - cd public
-  - git init
-  - echo 'blog.abplan.top' > CNAME
-  - git add -A .
-  - git status
-  - git commit -a -m "Travis-CI Deployed to Github"
-  - git remote rm origin
-  - git remote add origin https://${GITHUB_TOKEN}@${GH_GITHUB}
-  - git push -f origin master
-  - echo -e "Done\n"
+- cd public
+- rsync -az --delete ./* "${SERVER_USER}"@"${SERVER_IP}":"${TARGET_PATH}"
+- echo -e "Publish to Server Done\n"
+- git init
+- echo 'blog.abplan.top' > CNAME
+- git add -A .
+- git status
+- git commit -a -m "Travis-CI Deployed to Github"
+- git remote add origin https://${GITHUB_TOKEN}@${GH_GITHUB}
+- git push -f origin master
+- echo -e "Publish to Github Done\n"
 env:
   global:
-    - GH_GITHUB: github.com/FearwareX/xiaoshiguang123.github.io.git
+  - GH_GITHUB: github.com/FearwareX/xiaoshiguang123.github.io.git
