@@ -5,7 +5,7 @@ branches:
   - vue-press
 before_install:
 - export TZ='Asia/Shanghai'
-- openssl aes-256-cbc -K $encrypted_44750c81711d_key -iv $encrypted_44750c81711d_iv
+- openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv
   -in id_rsa.enc -out ~/.ssh/id_rsa -d
 - chmod 600 ~/.ssh/id_rsa
 install:
